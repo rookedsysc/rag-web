@@ -3,7 +3,7 @@ FROM ubuntu:22.04
 
 # Install required packages
 RUN apt-get update -y && apt-get upgrade -y
-RUN apt-get install -y curl git unzip xz-utils zip libglu1-mesa wget gpg apt-transport-https ca-certificates sudo
+RUN apt-get install -y curl git unzip xz-utils zip libglu1-mesa wget gpg apt-transport-https ca-certificates sudo python3
 
 # Create flutter user and group
 RUN useradd -m -s /bin/bash flutter && \
@@ -37,12 +37,8 @@ RUN flutter config --enable-web && \
 # Build for web
 RUN flutter build web --release
 
-# use nginx to deploy
-FROM nginx:1.25.2-alpine
+# Expose port 8000
+EXPOSE 8000
 
-# copy the info of the builded web app to nginx
-COPY --from=build-env /app/build/web /usr/share/nginx/html
-
-# Expose and run nginx
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# Start a simple HTTP server to serve the web build
+CMD python3 -m http.server 8000 --directory build/web
