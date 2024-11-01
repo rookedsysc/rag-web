@@ -6,20 +6,24 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
+    networks:
+      - milvus
 
   backend:
     hostname: backend
     build:
-      context: backend
+      context: ./backend
       dockerfile: Dockerfile
     container_name: nestjs-app
     ports:
       - "3000:3000"
     volumes:
-      - .:/usr/src/app
+      - ./backend:/usr/src/app
       - /usr/src/app/node_modules
-    environment:
-      - NODE_ENV=development
+    depends_on:
+      - standalone
+    networks:
+      - milvus
 
   etcd:
     container_name: milvus-etcd
