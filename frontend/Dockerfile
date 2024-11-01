@@ -37,15 +37,8 @@ RUN flutter config --enable-web && \
 # Build for web
 RUN flutter build web --release
 
-# Serve stage
-FROM nginx:alpine
+# Expose port 8000
+EXPOSE 8000
 
-# Copy the built files to nginx
-COPY --from=builder /app/build/web /usr/share/nginx/html
-
-# Copy custom nginx config if needed
-# COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+# Start a simple HTTP server to serve the web build
+CMD python3 -m http.server 8000 --directory build/web
