@@ -18,11 +18,13 @@ RUN apt-get install -y curl git unzip xz-utils zip libglu1-mesa wget gpg apt-tra
 #    && rm -f /tmp/google.pub
 
 # Install and setup Flutter
-RUN mkdir -p /development
-RUN wget -q https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.24.4-stable.tar.xz \
-    && tar -xf flutter_linux_3.24.4-stable.tar.xz -C /development/ \
-    && rm flutter_linux_3.24.4-stable.tar.xz
-ENV PATH="/development/flutter/bin:${PATH}"
+#RUN mkdir -p /development
+#RUN wget -q https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.24.4-stable.tar.xz \
+#    && tar -xf flutter_linux_3.24.4-stable.tar.xz -C /development/ \
+#    && rm flutter_linux_3.24.4-stable.tar.xz
+#ENV PATH="/development/flutter/bin:${PATH}"
+RUN snap install flutter --classic
+
 
 WORKDIR /app
 
